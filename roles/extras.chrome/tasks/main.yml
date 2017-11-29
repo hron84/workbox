@@ -1,0 +1,20 @@
+---
+- name: Add Chrome APT repo
+  apt_repository:
+    repo: "deb  {{ '[arch=amd64]' if  ansible_architecture == 'x86_64' else '' }} https://dl.google.com/linux/chrome/deb/ stable main"
+    state: present
+    filename: google-chrome
+
+- name: Add Chrome keys
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: "{{ item }}"
+  with_items:
+    - 640DB551
+    - 997C215E
+
+- name: Install Google Chrome
+  apt:
+    update_cache: yes
+    name: google-chrome-stable
+    state: latest

@@ -1,0 +1,6 @@
+:signature packet: algo 1, keyid 1397BC53640DB551
+	version 4, created 1511817441, md5len 0, sigclass 0x00
+	digest algo 8, begin of digest cd 89
+	hashed subpkt 2 len 4 (sig created 2017-11-27)
+	subpkt 16 len 8 (issuer key ID 1397BC53640DB551)
+	data: [4095 bits]

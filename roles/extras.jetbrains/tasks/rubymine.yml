@@ -1,0 +1,33 @@
+- name: "[RUBYMINE] Check if RubyMine {{ jetbrains.ruby.version }} is installed"
+  stat:
+    path: /opt/JetBrains/RubyMine-{{ jetbrains.ruby.version }}
+  register: rubymine_dir
+
+- name: "[RUBYMINE] Download RubyMine {{ jetbrains.ruby.version }}"
+  get_url:
+    url: https://download.jetbrains.com/ruby/RubyMine-{{ jetbrains.ruby.version }}.tar.gz
+    dest: /tmp/rubymine.tar.gz
+  when: not rubymine_dir.stat.exists
+  register: rubymine_download
+
+- name: "[RUBYMINE] Unpack Rubymine"
+  unarchive:
+    remote_src: yes
+    src: /tmp/rubymine.tar.gz
+    dest: /opt/JetBrains
+    creates: /opt/JetBrains/RubyMine-{{ jetbrains.ruby.version }}
+  when: rubymine_download is defined and rubymine_download.changed
+  register: rubymine_unpack
+
+
+- name: "[RUBYMINE] Ensure permissions"
+  #shell: chmod -R g+sw /opt/JetBrains/RubyMine-{{ jetbrains.ruby.version }}
+  file:
+    path: /opt/JetBrains/RubyMine-{{ jetbrains.ruby.version }}
+    owner: root
+    group: jbadmin
+    mode: ug+rw,g+s
+    recurse: yes
+    state: directory
+#  when: rubymine_unpack.changed
+

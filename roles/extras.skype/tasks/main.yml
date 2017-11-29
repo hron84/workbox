@@ -1,0 +1,17 @@
+---
+- name: Install Skype APT key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 1F3045A5DF7587C3
+
+- name: Add Skype APT repo
+  apt_repository:
+    repo: "deb  {{ '[arch=amd64]' if  ansible_architecture == 'x86_64' else '' }} https://repo.skype.com/deb stable main"
+    state: present
+    filename: skype-stable
+
+- name: Install SkypeForLinux
+  apt:
+    name: skypeforlinux
+    state: latest
+    update_cache: yes

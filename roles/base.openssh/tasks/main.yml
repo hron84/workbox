@@ -1,0 +1,30 @@
+---
+- name: Install OpenSSH client
+  apt:
+    name: openssh-client
+    state: latest
+
+- name: Install OpenSSH Server
+  apt:
+    name: openssh-server
+    state: latest
+  when: no_ssh is not defined
+
+- name: Set OpenSSH config options
+  lineinfile:
+    name: /etc/ssh/sshd_config
+    regexp: "^{{ item.key }}"
+    line: "{{ item.key }} {{ item.value }}"
+  with_items:
+    - key: PermitRootLogin
+      value: prohibit-password
+    - key: UseDNS
+      value: "no"
+    - key: PubkeyAuthentication
+      value: "yes"
+    - key: RSAAuthentication
+      value: "yes"
+    - key: X11Forwarding
+      value: "yes"
+    - key: Subsystem
+      value: "sftp internal-sftp"

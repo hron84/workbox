@@ -1,0 +1,22 @@
+- name: Add WebUpd8 Java repo
+  apt_repository:
+    repo: ppa:webupd8team/java
+
+- name: Configure Java to auto-accept license
+  debconf:
+    name: oracle-java{{ java.version | default(8) }}-installer
+    question: "{{ item }}"
+    vtype: boolean
+    value: true
+    unseen: no
+  with_items:
+    - shared/accepted-oracle-license-v1-1
+    - shared/accepted-oracle-licence-v1-1
+
+
+- name: Install Java {{ java.version | default(8) }}
+  apt:
+    update_cache: yes
+    name: oracle-java{{ java.version | default(8) }}-set-default
+
+

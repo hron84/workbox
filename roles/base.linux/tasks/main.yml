@@ -1,0 +1,128 @@
+---
+- name: Set basic hostname
+  copy:
+    dest: /etc/hostname
+    content: "{{ box_name }}"
+
+- name: Set host FQDN
+  lineinfile:
+    name: /etc/hosts
+    insertafter: EOF
+    line: "{{ ansible_default_ipv4.address }} {{ box_fqdn | default(box_name + '.aion.local') }} {{ box_name }}"
+  when: ansible_default_ipv4 is defined and ansible_default_ipv4.address is defined
+
+## TODO: Check if the specified timezone exists
+
+- name: Set timezone
+  file:
+    src: /usr/share/zoneinfo/{{ timezone }}
+    dest: /etc/localtime
+    force: yes
+    state: link
+  ignore_errors: yes
+
+
+- name: Add update repos
+  apt_repository:
+    repo: "deb http://de.archive.ubuntu.com/ubuntu {{ ansible_distribution_release }}-{{ item }} main restricted universe multiverse"
+    state: present
+  with_items:
+    - updates
+    - security
+
+- name: Check if 32bit enabled
+  shell: dpkg --print-foreign-architectures | grep -q i386
+  register: check_dpkg_32bit
+  failed_when: false
+
+- name: Add i386 architecture
+  shell: dpkg --add-architecture i386
+  when: ansible_architecture == 'x86_64' and check_dpkg_32bit.failed
+
+- name: Install base tools
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - apt-transport-https
+    - aptitude
+    - atop
+    - arj
+    - astyle
+    - biabam
+    - cabextract
+    - curl
+    - direnv
+    - git
+    - htop
+    - imagemagick
+    - iputils-ping
+    - iputils-arping
+    - libxml2-utils
+    - lsof
+    - mailutils
+    - make
+    - mc
+    - mercurial
+    - ncftp
+    - netcat
+    - nmap
+    - p7zip-full
+    - python
+    - screen
+    - software-properties-common
+    - strace
+    - subversion
+    - tcpdump
+    - telnet
+    - traceroute
+    - ubuntu-standard
+    - unrar
+    - unshield
+    - unzip
+    - update-manager-core
+    - update-motd
+    - vim-nox
+    - wget
+    - zip
+    - zsh
+
+- name: Update system
+  apt:
+    name: "*"
+    state: latest
+
+- name: Install language packs
+  apt:
+    name: language-pack-{{ item }}
+    state: present
+  with_items:
+    - "{{ langs }}"
+
+- name: Add admin group
+  group:
+    name: admin
+    state: present
+
+
+- name: Create users
+  user:
+    name: "{{ item.name }}"
+    home: /home/{{ item.name }}
+    shell: /bin/{{ item.shell | default('bash') }}
+    update_password: on_create
+    password: "$6$IV.BsK1YL$CnkobVyhnWakgWGmoZ4MxDMynE7D9kaQgPjEGrX3xmmZVupfBiFr7BuVIJDcx4mhGHp.ZckX2F9yUEAisH2GW0"
+  with_items:
+    - "{{ users }}"
+  when: users is defined
+
+- name: Create user homedir
+  file:
+    name: /home/{{ item.name }}
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: 0750
+    state: directory
+  with_items:
+    - "{{ users }}"
+  when: users is defined
+

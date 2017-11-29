@@ -1,0 +1,30 @@
+- hosts: all
+  become: yes
+  roles:
+    - role: base.linux
+      tags: linux
+    - role: base.netman
+      tags: network
+    - role: base.openssh
+      tags: ssh
+    - role: gui.mate
+      tags: mate
+    - role: extras.chrome
+      tags: chrome
+    - role: extras.teamviewer
+      tags: 
+        - teamviewer
+        - tvw
+    - role: extras.java
+      tags: java
+    - role: extras.jetbrains
+      when: jetbrains is defined
+      tags: jetbrains
+
+    - role: extras.slack
+      tags: slack
+    - role: extras.skype
+      tags: skype
+   #- role: base.users
+   #  tags: users
+

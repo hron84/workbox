@@ -1,0 +1,11 @@
+
+- hosts: all
+  tasks:
+  - name: Check if 32bit enabled
+    shell: dpkg --print-foreign-architectures | grep -q i386
+    register: dpkg_32bit
+    ignore_errors: yes
+
+  - name: debug result
+    debug: 
+      var: dpkg_32bit

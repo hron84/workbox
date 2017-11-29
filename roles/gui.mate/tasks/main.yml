@@ -1,0 +1,17 @@
+- name: Add Ubuntu Mate Dev PPA
+  apt_repository:
+    repo: ubuntu-mate-dev/{{ ansible_distribution_release }}-mate
+    state: present
+  when: (gui is defined and gui.desktop == "mate" and ( ansible_distribution_version < 16.04 or ( gui.mate is defined and gui.mate.experimental is defined )))
+ 
+- name: Install MATE Desktop environment
+  apt:
+    update_cache: yes
+    name: ubuntu-mate-desktop
+    state: present
+
+- name: Enable LightDM Service
+  service:
+    name: lightdm
+    enabled: yes
+    state: started

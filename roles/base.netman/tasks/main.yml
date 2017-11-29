@@ -1,0 +1,25 @@
+- name: Install networkmanager
+  apt:
+    name: network-manager
+    state: present
+  when: networkmanager.enabled is defined
+
+- name: Install NetworkManager plugins
+  apt:
+    name: network-manager-{{ item }}
+    install_recommends: no
+  with_items:
+  - "{{ networkmanager.plugins }}"
+  when: networkmanager.enabled is defined
+
+- name: Install NetworkManager GNOME plugins
+  apt:
+    name: network-manager-{{ item }}-gnome
+  with_items:
+  - "{{ networkmanager.plugins }}"
+  when: networkmanager.enabled is defined and gui is defined
+
+- name: Enable NetworkManager
+  service:
+    name: network-manager
+    state: started

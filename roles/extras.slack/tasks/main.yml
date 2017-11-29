@@ -1,0 +1,11 @@
+---
+- name: Check Slack is installed
+  stat:
+    path: /usr/lib/slack/slack
+  register: slack_exe
+
+- name: Install Slack
+  apt:
+    deb: https://downloads.slack-edge.com/linux_releases/slack-desktop-{{ slack.version | default('2.9.0') }}-amd64.deb
+    state: present
+  when: slack is defined and not slack_exe.stat.exists
