@@ -1,5 +1,7 @@
-- hosts: sunshine
+- hosts: merlin
   roles:
+    - role: base.ansible
+      tags: ansible
     - role: base.linux
       tags: linux
     - role: base.netman
@@ -24,6 +26,8 @@
       tags: slack
     - role: extras.skype
       tags: skype
+    - role: extras.messenger
+      tags: messenger
    #- role: base.users
    #  tags: users
 

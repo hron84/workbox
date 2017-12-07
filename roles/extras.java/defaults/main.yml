@@ -1,0 +1,8 @@
+---
+java:
+  version: 8
+
+## TODO make java versions listable and vendorable
+#java:
+#  - vendor: Sun
+#    version: 8

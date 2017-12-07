@@ -1,11 +1,30 @@
 ---
-- name: Check Slack is installed
-  stat:
-    path: /usr/lib/slack/slack
-  register: slack_exe
+#- name: Check Slack is installed
+#  stat:
+#    path: /usr/lib/slack/slack
+#  register: slack_exe
+#
+#- name: Install Slack
+#  apt:
+#    deb: https://downloads.slack-edge.com/linux_releases/slack-desktop-{{ slack.version | default('2.9.0') }}-amd64.deb
+#    state: present
+#  when: slack is defined and not slack_exe.stat.exists
+#
+- name: Add Slack APT key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: C6ABDCF64DB9A0B2
+    state: present
+
+- name: Add Slack APT repo
+  apt_repository:
+    repo: "deb https://packagecloud.io/slacktechnologies/slack/debian/ jessie main"
+    filename: slack
+    state: present
 
 - name: Install Slack
   apt:
-    deb: https://downloads.slack-edge.com/linux_releases/slack-desktop-{{ slack.version | default('2.9.0') }}-amd64.deb
-    state: present
-  when: slack is defined and not slack_exe.stat.exists
+    update_cache: yes
+    name: slack-desktop
+    state: latest
+

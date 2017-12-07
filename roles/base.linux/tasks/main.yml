@@ -8,7 +8,7 @@
   lineinfile:
     name: /etc/hosts
     insertafter: EOF
-    line: "{{ ansible_default_ipv4.address }} {{ box_fqdn | default(box_name + '.aion.local') }} {{ box_name }}"
+    line: "{{ ansible_default_ipv4.address }} {{ box_fqdn | default(box_name + domain) }} {{ box_name }}"
   when: ansible_default_ipv4 is defined and ansible_default_ipv4.address is defined
 
 ## TODO: Check if the specified timezone exists
@@ -37,7 +37,7 @@
 
 - name: Add i386 architecture
   shell: dpkg --add-architecture i386
-  when: ansible_architecture == 'x86_64' and check_dpkg_32bit.failed
+  when: ansible_architecture == 'x86_64' and 'i386' not in check_dpkg_32bit.stdout
 
 - name: Install base tools
   apt:
