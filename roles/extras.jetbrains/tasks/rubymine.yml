@@ -31,3 +31,11 @@
     state: directory
 #  when: rubymine_unpack.changed
 
+- name: "[RUBYMINE] Install desktop entry"
+  template:
+    src: rubymine.desktop.j2
+    dest: /usr/share/applications/jetbrains-rubymine.desktop
+    owner: root
+    group: jbadmin
+    mode: 0644
+
