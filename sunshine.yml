@@ -24,6 +24,8 @@
       tags: slack
     - role: extras.skype
       tags: skype
+    - role: extras.messenger
+      tags: messenger
    #- role: base.users
    #  tags: users
 
