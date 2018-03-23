@@ -8,7 +8,7 @@
   lineinfile:
     name: /etc/hosts
     insertafter: EOF
-    line: "{{ ansible_default_ipv4.address }} {{ box_fqdn | default(box_name + domain) }} {{ box_name }}"
+    line: "{{ ansible_default_ipv4.address }} {{ box_fqdn | default(box_name + '.' + domain) }} {{ box_name }}"
   when: ansible_default_ipv4 is defined and ansible_default_ipv4.address is defined
 
 ## TODO: Check if the specified timezone exists
