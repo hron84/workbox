@@ -2,6 +2,8 @@
   roles:
     - role: base.linux
       tags: linux
+    - role: base.linux.devtools
+      tags: devtools
     - role: base.netman
       tags: network
     - role: base.openssh
@@ -26,6 +28,8 @@
       tags: skype
     - role: extras.messenger
       tags: messenger
+    - role: base.nodejs
+      tags: nodejs
    #- role: base.users
    #  tags: users
 

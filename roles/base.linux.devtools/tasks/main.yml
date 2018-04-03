@@ -1,0 +1,20 @@
+---
+- name: Install development tools
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - build-essential
+    - cmake
+    - automake
+    - autoconf
+    - make
+    - dpkg-dev
+    - patch
+    - git
+    - subversion
+    - libmysqlclient-dev
+    - libpq-dev
+    - libxml2-dev
+    - libxml2-utils
+    - libxslt1-dev
+    - libsqlite3-dev

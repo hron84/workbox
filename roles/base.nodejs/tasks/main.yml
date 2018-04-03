@@ -1,0 +1,19 @@
+---
+- name: Add NodeJS APT repo
+  apt_repository:
+    repo: "deb  {{ '[arch=amd64]' if  ansible_architecture == 'x86_64' else '' }} https://deb.nodesource.com/node_8.x xenial main"
+    state: present
+    filename: nodesource
+
+- name: Add NodeJS key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: "{{ item }}"
+  with_items:
+    - 68576280
+
+- name: NodeJS
+  apt:
+    update_cache: yes
+    name: nodejs
+    state: latest
