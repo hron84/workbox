@@ -12,6 +12,7 @@ if [ -f /opt/ansible/hacking/setup ]; then
 fi
 
 if [ -d "${ANSIBLE_ROOT}"/.git ]; then
+  git branch --set-upstream-to=origin/master master
   git pull --rebase
 fi
 
