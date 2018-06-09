@@ -12,7 +12,7 @@ if [ -f /opt/ansible/hacking/setup ]; then
 fi
 
 if [ -d "${ANSIBLE_ROOT}"/.git ]; then
-  git branch --set-upstream-to=origin/master master
+  fgrep -q '[branch "master"]' "${ANSIBLE_ROOT}/.git/config" || git branch --set-upstream-to=origin/master master
   git pull --rebase
 fi
 
@@ -47,6 +47,6 @@ echo " -- Running Ansible at $(date +"%F %T") on ${FQDN} --"
 
 # make sure ansible is up-to-date, even if we bootstraping the host right now
 $SUDO ansible-playbook -i "${ANSIBLE_INVENTORY}" "${PLAYBOOK}" -t ansible
-$SUDO ansible-playbook -i "${ANSIBLE_INVENTORY}" "${PLAYBOOK}"
+$SUDO ansible-playbook -i "${ANSIBLE_INVENTORY}" "${PLAYBOOK}" "$@"
 
 echo " -- Ansible ended up at $(date +"%F %T") --"
