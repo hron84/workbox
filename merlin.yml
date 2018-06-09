@@ -4,14 +4,20 @@
       tags: ansible
     - role: base.linux
       tags: linux
+    - role: base.linux.devtools
+      tags: devtools
     - role: base.netman
       tags: network
     - role: base.openssh
       tags: ssh
     - role: gui.mate
-      tags: mate
+      tags: 
+        - mate
+        - gui
     - role: extras.chrome
       tags: chrome
+    - role: base.nodejs
+      tags: nodejs
     - role: extras.teamviewer
       tags: 
         - teamviewer
@@ -19,7 +25,6 @@
     - role: extras.java
       tags: java
     - role: extras.jetbrains
-      when: jetbrains is defined
       tags: jetbrains
 
     - role: extras.slack
