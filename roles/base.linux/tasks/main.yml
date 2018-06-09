@@ -30,7 +30,7 @@
 
 - name: Add update repos
   apt_repository:
-    repo: "deb http://de.archive.ubuntu.com/ubuntu {{ ansible_distribution_release }}-{{ item }} main restricted universe multiverse"
+    repo: "deb http://hu.archive.ubuntu.com/ubuntu {{ ansible_distribution_release }}-{{ item }} main restricted universe multiverse"
     filename: updates
     state: present
   with_items:
