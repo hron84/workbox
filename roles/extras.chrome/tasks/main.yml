@@ -5,11 +5,6 @@
     state: present
     filename: google-chrome
 
-  apt_repository:
-    repo: "deb  {{ '[arch=amd64]' if  ansible_architecture == 'x86_64' else '' }} http://dl.google.com/linux/chrome/deb/ stable main"
-    state: absent
-    filename: google-chrome
-
 - name: Add Chrome keys
   apt_key:
     keyserver: keyserver.ubuntu.com
