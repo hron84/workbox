@@ -10,7 +10,7 @@
     keyserver: keyserver.ubuntu.com
     id: "{{ item }}"
   with_items:
-    - 68576280
+    - 1655A0AB68576280
 
 - name: NodeJS
   apt:
