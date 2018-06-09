@@ -1,6 +1,6 @@
 - name: "[PHPSTORM] Check if PhpStorm {{ jetbrains.php.version }} is installed"
   stat:
-    path: /opt/JetBrains/PhpStorm-{{ jetbrains.php.version }}
+    path: /opt/JetBrains/PhpStorm-{{ jetbrains.php.build }}
   register: phpstorm_dir
 
 - name: "[PHPSTORM] Download PhpStorm {{ jetbrains.php.version }}"
@@ -15,15 +15,15 @@
     remote_src: yes
     src: /tmp/phpstorm.tar.gz
     dest: /opt/JetBrains
-    creates: /opt/JetBrains/PhpStorm-{{ jetbrains.php.version }}
+    creates: /opt/JetBrains/PhpStorm-{{ jetbrains.php.build }}
   when: phpstorm_download is defined and phpstorm_download.changed
   register: phpstorm_unpack
 
 
 - name: "[PHPSTORM] Ensure permissions"
-  #shell: chmod -R g+sw /opt/JetBrains/PhpStorm-{{ jetbrains.php.version }}
+  #shell: chmod -R g+sw /opt/JetBrains/PhpStorm-{{ jetbrains.php.build }}
   file:
-    path: /opt/JetBrains/PhpStorm-{{ jetbrains.php.version }}
+    path: /opt/JetBrains/PhpStorm-{{ jetbrains.php.build }}
     owner: root
     group: jbadmin
     mode: ug+rw,g+s
@@ -39,8 +39,8 @@
     group: jbadmin
     mode: 0644
 
-#- name: "[PHPSTORM] Remove downloaded package"
-#  file:
-#    path: /tmp/phpstorm.tar.gz
-#    state: absent
+- name: "[PHPSTORM] Remove downloaded package"
+  file:
+    path: /tmp/phpstorm.tar.gz
+    state: absent
 

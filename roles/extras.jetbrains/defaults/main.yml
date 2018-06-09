@@ -5,4 +5,5 @@ jetbrains:
     version: 2018.1.3
   php:
     enable: no
-    version: 2018.1.2
+    version: 2018.1.5
+    build: 181.5281.19
