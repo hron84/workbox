@@ -21,4 +21,11 @@ networkmanager:
     - openvpn
     - vpnc
 
+jetbrains:
+  ruby:
+    enable: yes
+    version: 181.4203.562
+  php:
+    enable: yes
+
 # vim: ft=yaml

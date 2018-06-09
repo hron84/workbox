@@ -28,6 +28,8 @@
       tags: skype
     - role: extras.messenger
       tags: messenger
+    - role: extras.discord
+      tags: discord
     - role: base.nodejs
       tags: nodejs
    #- role: base.users
