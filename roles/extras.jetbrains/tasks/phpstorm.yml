@@ -1,0 +1,46 @@
+- name: "[PHPSTORM] Check if PhpStorm {{ jetbrains.php.version }} is installed"
+  stat:
+    path: /opt/JetBrains/PhpStorm-{{ jetbrains.php.version }}
+  register: phpstorm_dir
+
+- name: "[PHPSTORM] Download PhpStorm {{ jetbrains.php.version }}"
+  get_url:
+    url: https://download.jetbrains.com/webide/PhpStorm-{{ jetbrains.php.version }}.tar.gz
+    dest: /tmp/phpstorm.tar.gz
+  when: not phpstorm_dir.stat.exists
+  register: phpstorm_download
+
+- name: "[PHPSTORM] Unpack PhpStorm"
+  unarchive:
+    remote_src: yes
+    src: /tmp/phpstorm.tar.gz
+    dest: /opt/JetBrains
+    creates: /opt/JetBrains/PhpStorm-{{ jetbrains.php.version }}
+  when: phpstorm_download is defined and phpstorm_download.changed
+  register: phpstorm_unpack
+
+
+- name: "[PHPSTORM] Ensure permissions"
+  #shell: chmod -R g+sw /opt/JetBrains/PhpStorm-{{ jetbrains.php.version }}
+  file:
+    path: /opt/JetBrains/PhpStorm-{{ jetbrains.php.version }}
+    owner: root
+    group: jbadmin
+    mode: ug+rw,g+s
+    recurse: yes
+    state: directory
+#  when: phpstorm_unpack.changed
+
+- name: "[PHPSTORM] Install desktop entry"
+  template:
+    src: phpstorm.desktop.j2
+    dest: /usr/share/applications/jetbrains-phpstorm.desktop
+    owner: root
+    group: jbadmin
+    mode: 0644
+
+#- name: "[PHPSTORM] Remove downloaded package"
+#  file:
+#    path: /tmp/phpstorm.tar.gz
+#    state: absent
+

@@ -3,3 +3,6 @@ jetbrains:
   ruby:
     enable: no
     version: 2017.3.3
+  php:
+    enable: no
+    version: 2018.1.2
