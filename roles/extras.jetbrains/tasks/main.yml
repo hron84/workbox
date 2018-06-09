@@ -14,10 +14,10 @@
     state: directory
 
 - import_tasks: phpstorm.yml
-  when: jetbrains is defined and jetbrains.php is defined
+  when: jetbrains is defined and jetbrains.php is defined and jetbrains.php.enable
 
 - import_tasks: rubymine.yml
-  when: jetbrains is defined and jetbrains.ruby is defined
+  when: jetbrains is defined and jetbrains.ruby is defined and jetbrains.ruby.enable
 
 - import_tasks: intelliJ.yml
   when: jetbrains is defined and jetbrains.java is defined and jetbrains.java == "free"

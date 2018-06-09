@@ -10,7 +10,7 @@
   when: not rubymine_dir.stat.exists
   register: rubymine_download
 
-- name: "[RUBYMINE] Unpack Rubymine"
+- name: "[RUBYMINE] Unpack RubyMine"
   unarchive:
     remote_src: yes
     src: /tmp/rubymine.tar.gz
@@ -38,4 +38,9 @@
     owner: root
     group: jbadmin
     mode: 0644
+
+- name: "[RUBYMINE] Remove downloaded package"
+  file:
+    path: /tmp/rubymine.tar.gz
+    state: absent
 
