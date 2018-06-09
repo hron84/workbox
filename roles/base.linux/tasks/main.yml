@@ -26,10 +26,12 @@
   shell: fgrep -q "{{ ansible_distribution_release }}-updates" /etc/apt/sources.list
   register: check_uprepo
   check_mode: no
+  ignore_errors: yes
 
 - name: Add update repos
   apt_repository:
     repo: "deb http://de.archive.ubuntu.com/ubuntu {{ ansible_distribution_release }}-{{ item }} main restricted universe multiverse"
+    filename: updates
     state: present
   with_items:
     - updates
