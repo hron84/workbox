@@ -1,0 +1,9 @@
+- name: Check if discord installed
+  stat:
+    path: /usr/bin/discord
+  register: discord_bin
+
+- name: Install Discord
+  apt:
+    deb: https://dl.discordapp.net/apps/linux/{{ discord.version }}/discord-{{ discord.version }}.deb
+  when: not discord_bin.stat.exists
