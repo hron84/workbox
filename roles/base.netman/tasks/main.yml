@@ -1,8 +1,11 @@
-- name: Install networkmanager
+- name: Install NetworkManager and dependencies
   apt:
-    name: network-manager
+    name: "{{ item }}"
     state: present
-  when: networkmanager.enabled is defined
+  with_items:
+    - network-manager
+    - dnsmasq
+  when: networkmanager is defined and networkmanager.enabled
 
 - name: Install NetworkManager plugins
   apt:
@@ -10,16 +13,38 @@
     install_recommends: no
   with_items:
   - "{{ networkmanager.plugins }}"
-  when: networkmanager.enabled is defined
+  when: networkmanager is defined and networkmanager.enabled
 
 - name: Install NetworkManager GNOME plugins
   apt:
     name: network-manager-{{ item }}-gnome
   with_items:
   - "{{ networkmanager.plugins }}"
-  when: networkmanager.enabled is defined and gui is defined
+  when: networkmanager is defined and networkmanager.enabled and gui is defined
+
+- name: Set NetworkManager to manage wired devices
+  ini_file:
+    path: /etc/NetworkManager/NetworkManager.conf
+    section: keyfile
+    option: "unmanaged-devices"
+    value: "*,except:type:wifi,except:type:wwan,except:type:ethernet"
+
+- name: Set NetworkManager to use DNSMasq
+  ini_file:
+    path: /etc/NetworkManager/NetworkManager.conf
+    section: main
+    option: dns
+    value: dnsmasq
+
 
 - name: Enable NetworkManager
   service:
+    enabled: yes
     name: network-manager
-    state: started
+    state: restarted
+
+- name: Disable DNSMasq service, NM manages it
+  service:
+    enabled: no
+    name: dnsmasq
+    state: stopped
