@@ -7,8 +7,47 @@
 - name: Install MATE Desktop environment
   apt:
     update_cache: yes
-    name: ubuntu-mate-desktop
+    name: "{{ item }}"
     state: present
+  with_items:
+    - atril
+    - brasero
+    - caja-admin
+    - caja-open-terminal
+    - caja-seahorse
+    - caja-sendto
+    - caja-wallpaper
+    - cheese
+    - deja-dup
+    - ffmpegthumbnailer
+    - fonts-liberation
+    - gdebi
+    - gnome-disk-utility
+    - hplip
+    - ideviceinstaller
+    - ifuse
+    - indicator-session
+    - libreoffice-calc
+    - libreoffice-gnome
+    - libreoffice-writer
+    - lightdm-settings
+    - mate-calc
+    - mate-sensors-applet
+    - mate-system-monitor
+    - mate-tweak
+    - mate-window-buttons-applet
+    - mate-window-menu-applet
+    - mate-window-title-applet
+    - network-manager-gnome
+    - pluma
+    - pm-utils
+    - rhythmbox
+    - seahorse
+    - thunderbird-gnome-support
+    - transmission-gtk
+    - ubuntu-mate-artwork
+    - ubuntu-mate-core
+    - ubuntu-mate-wallpapers-xenial
 
 - name: Enable LightDM Service
   service:
