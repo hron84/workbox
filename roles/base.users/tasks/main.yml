@@ -1,3 +1,27 @@
+- name: 
+
+- name: "[USER] Create user {{ item }}"
+  user:
+    name: "{{ item.name }}"
+    comment: "{{ item.fullname | default(item.name) }}"
+    shell: "/bin/{{ item.shell | default("bash") }}"
+    create_home: yes
+    append: yes
+    groups:
+      - audio
+      - video
+      - plugdev
+      - "{{ 'admin' if item.admin else 'users' }}"
+      - "{{ item.groups | default([]) }}"
+  with_items:
+    - "{{ users }}"
+
+
+
+
+
+
+
 - include_tasks: "{{ item.name }}.yml"
   with_items:
     - "{{ users }}"
