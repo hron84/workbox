@@ -35,16 +35,16 @@
     - src: aliases
       dest: .aliases
 
-- name: Download VIM profile
+- name: "[HRON] Download VIM profile"
   get_url:
     url: https://github.com/hron84/dotvim/archive/master.zip
     dest: /tmp/vimrc.zip
     state: present
 
-- name: Unpack VIM profile
+- name: "[HRON] Unpack VIM profile"
   shell: unzip -qq -d /tmp /tmp/vimrc.zip
 
-- name: Install vim profile
+- name: "[HRON] Install vim profile"
   copy:
     remote_copy: yes
     src: /tmp/dotvim-master
