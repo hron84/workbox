@@ -1,0 +1,39 @@
+- hosts: sunshine
+  roles:
+    - role: base.linux
+      tags: linux
+    - role: base.linux.devtools
+      tags: devtools
+    - role: base.netman
+      tags: network
+    - role: base.openssh
+      tags: ssh
+    - role: gui.ubuntu
+      tags:
+        - gui
+        - gnome
+    - role: extras.chrome
+      tags: chrome
+    - role: extras.teamviewer
+      tags: 
+        - teamviewer
+        - tvw
+    - role: extras.java
+      tags: java
+    - role: extras.jetbrains
+      when: jetbrains is defined
+      tags: jetbrains
+
+    - role: extras.slack
+      tags: slack
+    - role: extras.skype
+      tags: skype
+    - role: extras.messenger
+      tags: messenger
+    - role: extras.discord
+      tags: discord
+    - role: base.nodejs
+      tags: nodejs
+   #- role: base.users
+   #  tags: users
+
