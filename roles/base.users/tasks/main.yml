@@ -1,4 +1,8 @@
-- name: 
+- name: "[USER] Ensure shell {{ item.shell }} is present for {{ item.name }}"
+  apt:
+    name: "{{ item.shell }}"
+    state: present
+
 
 - name: "[USER] Create user {{ item }}"
   user:
