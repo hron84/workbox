@@ -50,8 +50,7 @@
 
 - name: Install base tools
   apt:
-    name: "{{ item }}"
-  with_items:
+    name:
     - apt-transport-https
     - aptitude
     - atop
