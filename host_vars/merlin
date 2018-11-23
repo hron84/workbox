@@ -12,6 +12,12 @@ gui:
 java:
   version: 8
 
+jetbrains:
+  ruby:
+    enable: no
+  php:
+    enable: yes
+
 users:
   - name: hron
     fullname: Gabor GARAMI
@@ -22,6 +28,7 @@ networkmanager:
   plugins:
     - pptp
     - openvpn
+    - openconnect
     - vpnc
 
 # vim: ft=yaml
