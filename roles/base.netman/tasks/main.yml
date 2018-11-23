@@ -1,11 +1,11 @@
 - name: Install NetworkManager and dependencies
   apt:
-    name: "{{ item }}"
-    state: present
-  with_items:
+    name:
     - network-manager
     - dnsmasq
+    state: present
   when: networkmanager is defined and networkmanager.enabled
+  register: nm_pkg
 
 - name: Install NetworkManager plugins
   apt:
@@ -21,6 +21,7 @@
   with_items:
   - "{{ networkmanager.plugins }}"
   when: networkmanager is defined and networkmanager.enabled and gui is defined
+  notify: restart network-manager
 
 - name: Set NetworkManager to manage wired devices
   ini_file:
@@ -28,6 +29,8 @@
     section: keyfile
     option: "unmanaged-devices"
     value: "*,except:type:wifi,except:type:wwan,except:type:ethernet"
+  when: networkmanager is defined and networkmanager.enabled
+  notify: restart network-manager
 
 - name: Set NetworkManager to use DNSMasq
   ini_file:
@@ -35,16 +38,39 @@
     section: main
     option: dns
     value: dnsmasq
+  when: networkmanager is defined and networkmanager.enabled
+  notify: restart network-manager
 
-
-- name: Enable NetworkManager
-  service:
-    enabled: yes
-    name: network-manager
-    state: restarted
+- name: Set .wip as a valid TLD for localhost
+  copy:
+    dest: /etc/NetworkManager/dnsmasq.d/dnsmasq.conf
+    content: address=/wip/127.0.0.1
+  when: networkmanager is defined and networkmanager.enabled
+  notify: restart network-manager
 
 - name: Disable DNSMasq service, NM manages it
   service:
     enabled: no
     name: dnsmasq
     state: stopped
+  when: networkmanager is defined and networkmanager.enabled
+
+- name: Disable SystemD Resolver service, NM manages it
+  service:
+    enabled: no
+    name: systemd-resolved
+    state: stopped
+  when: networkmanager is defined and networkmanager.enabled
+
+- name: Remove resolv.conf
+  file:
+    path: /etc/resolv.conf
+    state: absent
+  when: networkmanager is defined and networkmanager.enabled and nm_pkg.changed
+  notify: restart network-manager
+
+- name: Enable NetworkManager
+  service:
+    enabled: yes
+    name: network-manager
+  when: networkmanager is defined and networkmanager.enabled
