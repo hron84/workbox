@@ -1,0 +1,46 @@
+- name: "[INTELLIJ:U] Check if IntelliJ Ultimate {{ jetbrains.java.version }} is installed"
+  stat:
+    path: /opt/JetBrains/idea-IU-{{ jetbrains.java.build }}
+  register: intelliju_dir
+
+- name: "[INTELLIJ:U] Download IntelliJ Ultimate {{ jetbrains.java.version }}"
+  get_url:
+    url: https://download.jetbrains.com/webide/ideaIU-{{ jetbrains.java.version }}.tar.gz
+    dest: /tmp/intelliju.tar.gz
+  when: not intelliju_dir.stat.exists
+  register: intelliju_download
+
+- name: "[INTELLIJ:U] Unpack IntelliJ Ultimate"
+  unarchive:
+    remote_src: yes
+    src: /tmp/intelliju.tar.gz
+    dest: /opt/JetBrains
+    creates: /opt/JetBrains/idea-IU-{{ jetbrains.java.build }}
+  when: intelliju_download is defined and intelliju_download.changed
+  register: intelliju_unpack
+
+
+- name: "[INTELLIJ:U] Ensure permissions"
+  #shell: chmod -R g+sw /opt/JetBrains/idea-IU-{{ jetbrains.java.build }}
+  file:
+    path: /opt/JetBrains/idea-IU-{{ jetbrains.java.build }}
+    owner: root
+    group: jbadmin
+    mode: ug+rw,g+s
+    recurse: yes
+    state: directory
+#  when: intelliju_unpack.changed
+
+- name: "[INTELLIJ:U] Install desktop entry"
+  template:
+    src: intelliju.desktop.j2
+    dest: /usr/share/applications/jetbrains-intellij-ultimate.desktop
+    owner: root
+    group: jbadmin
+    mode: 0644
+
+- name: "[INTELLIJ:U] Remove downloaded package"
+  file:
+    path: /tmp/intelliju.tar.gz
+    state: absent
+

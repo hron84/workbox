@@ -7,3 +7,9 @@ jetbrains:
     enable: no
     version: 2018.1.5
     build: 181.5281.19
+
+  java:
+    license: paid
+    enable: no
+    version: 2018.1.4
+    build: 181.5087.20
