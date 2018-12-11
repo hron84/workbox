@@ -1,4 +1,8 @@
 ---
+- name: Ensure GnuPG is installed
+  apt:
+    name: gnupg
+    state: present
 - name: Install Ansible PPA Key
   apt_key:
     id: 7BB9C367
