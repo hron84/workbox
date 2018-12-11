@@ -12,6 +12,7 @@
   with_items:
     - 640DB551
     - 997C215E
+    - 1397BC53640DB551
 
 - name: Install Google Chrome
   apt:
