@@ -38,15 +38,11 @@
     - security
   when: check_uprepo.rc > 0
     
-- name: Check if 32bit enabled
-  shell: dpkg --print-foreign-architectures | grep -q i386
-  register: check_dpkg_32bit
-  failed_when: false
-  check_mode: no
 
 - name: Add i386 architecture
-  shell: dpkg --add-architecture i386
-  when: ansible_architecture == 'x86_64' and 'i386' not in check_dpkg_32bit.stdout
+  lineinfile:
+    path: /var/lib/dpkg/arch
+    line: i386
 
 - name: Install base tools
   apt:
