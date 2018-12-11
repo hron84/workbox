@@ -20,5 +20,5 @@
   when: jetbrains is defined and jetbrains.ruby is defined and jetbrains.ruby.enable
 
 - import_tasks: intelliJU.yml
-  when: jetbrains is defined and jetbrains.java is defined and jetbrains.java.license != "free"
+  when: jetbrains is defined and jetbrains.java is defined and jetbrains.java.enable and jetbrains.java.license != "free"
 
