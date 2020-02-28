@@ -44,3 +44,20 @@
     path: /tmp/rubymine.tar.gz
     state: absent
 
+- include_tasks: jetbrains-agent.yml
+  when: jetbrains.ruby.version is version_compare('2018.1.3', '>')
+
+- name: "[RUBYMINE] Configure JetBrains Agent"
+  lineinfile:
+    path: /opt/JetBrains/RubyMine-{{ jetbrains.ruby.version }}/bin/{{ item }}
+    line: "-javaagent:/opt/JetBrains/jetbrains-agent/jetbrains-agent.jar"
+    regexp: "^-javaagent:/opt/JetBrains/jetbrains-agent/jetbrains-agent.jar"
+    owner: root
+    group: jbadmin
+    mode: 0664
+    insertafter: EOF
+    create: no
+  when: jetbrains.agent.enable and jetbrains.ruby.version is version_compare('2018.1.3', '>')
+  with_items:
+    - rubymine64.vmoptions
+    - rubymine.vmoptions

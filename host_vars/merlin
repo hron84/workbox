@@ -14,8 +14,10 @@ java:
 
 jetbrains:
   ruby:
-    enable: no
+    enable: yes
   php:
+    enable: yes
+  agent:
     enable: yes
 
 users:

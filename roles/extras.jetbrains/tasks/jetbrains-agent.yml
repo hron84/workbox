@@ -1,0 +1,37 @@
+- name: "[JBAGENT] Check if JetBrains Agent is installed"
+  stat:
+    path: /opt/JetBrains/jetbrains-agent
+  register: jbagent_dir
+
+- name: "[JBAGENT] Download JetBrains Agent"
+  get_url:
+    url: "{{ jetbrains.agent.url }}"
+    dest: /tmp/jetbrains-agent-latest.zip
+  when: jetbrains.agent.enable and not jbagent_dir.stat.exists
+  register: jbagent_download
+
+- name: "[JBAGENT] unpack JetBrains Agent"
+  unarchive:
+    remote_src: yes
+    src: /tmp/jetbrains-agent-latest.zip
+    dest: /opt/JetBrains
+    creates: /opt/JetBrains/jetbrains-agent/jetbrains-agent.jar
+  when: jetbrains.agent.enable and jbagent_download is defined and jbagent_download.changed
+  register: jbagent_unpack
+
+- name: "[JBAGENT] Ensure permissions"
+  file:
+    path: /opt/JetBrains/jetbrains-agent
+    owner: root
+    group: jbadmin
+    mode: ug+rw,g+s
+    recurse: yes
+    state: directory
+  when: jetbrains.agent.enable
+
+- name: "[JBAGENT] Remove downloaded package"
+  file:
+    path: /tmp/jetbrains-agent-latest.zip
+    state: absent
+  when: jetbrains.agent.enable
+
