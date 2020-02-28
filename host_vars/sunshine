@@ -22,10 +22,14 @@ networkmanager:
     - vpnc
 
 jetbrains:
-  ruby:
+  java:
     enable: yes
-    version: 181.4203.562
-  php:
-    enable: yes
+    version: 2019.3.3
+    build: 193.6494.35
+    license: free
+#  ruby:
+#    enable: yes
+#  agent:
+#    enable: no
 
 # vim: ft=yaml

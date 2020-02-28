@@ -19,9 +19,7 @@
     - role: extras.java
       tags: java
     - role: extras.jetbrains
-      when: jetbrains is defined
       tags: jetbrains
-
     - role: extras.slack
       tags: slack
     - role: extras.skype
@@ -32,6 +30,6 @@
       tags: discord
     - role: base.nodejs
       tags: nodejs
-   #- role: base.users
-   #  tags: users
+    - role: base.users
+      tags: users
 
