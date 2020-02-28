@@ -22,3 +22,5 @@
 - import_tasks: intelliJU.yml
   when: jetbrains is defined and jetbrains.java is defined and jetbrains.java.enable and jetbrains.java.license != "free"
 
+- import_tasks: intelliJC.yml
+  when: jetbrains is defined and jetbrains.java is defined and jetbrains.java.enable and jetbrains.java.license == "free"

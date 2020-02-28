@@ -1,0 +1,46 @@
+- name: "[INTELLIJ:C] Check if IntelliJ Community {{ jetbrains.java.version }} is installed"
+  stat:
+    path: /opt/JetBrains/idea-IC-{{ jetbrains.java.build }}
+  register: intellijc_dir
+
+- name: "[INTELLIJ:C] Download IntelliJ Community {{ jetbrains.java.version }}"
+  get_url:
+    url: https://download-cf.jetbrains.com/idea/ideaIC-{{ jetbrains.java.version }}-no-jbr.tar.gz
+    dest: /tmp/intellijc.tar.gz
+  when: not intellijc_dir.stat.exists
+  register: intellijc_download
+
+- name: "[INTELLIJ:C] Unpack IntelliJ Community"
+  unarchive:
+    remote_src: yes
+    src: /tmp/intellijc.tar.gz
+    dest: /opt/JetBrains
+    creates: /opt/JetBrains/idea-IC-{{ jetbrains.java.build }}
+  when: intellijc_download is defined and intellijc_download.changed
+  register: intellijc_unpack
+
+
+- name: "[INTELLIJ:C] Ensure permissions"
+  #shell: chmod -R g+sw /opt/JetBrains/idea-IU-{{ jetbrains.java.build }}
+  file:
+    path: /opt/JetBrains/idea-IU-{{ jetbrains.java.build }}
+    owner: root
+    group: jbadmin
+    mode: ug+rw,g+s
+    recurse: yes
+    state: directory
+#  when: intellijc_unpack.changed
+
+- name: "[INTELLIJ:C] Install desktop entry"
+  template:
+    src: intellijc.desktop.j2
+    dest: /usr/share/applications/jetbrains-intellij-community.desktop
+    owner: root
+    group: jbadmin
+    mode: 0644
+
+- name: "[INTELLIJ:C] Remove downloaded package"
+  file:
+    path: /tmp/intellijc.tar.gz
+    state: absent
+
