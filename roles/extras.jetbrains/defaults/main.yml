@@ -2,8 +2,7 @@
 jetbrains:
   ruby:
     enable: no
-    #version: 2018.1.3
-    version: 2019.3.3
+    version: 2020.1.1
   php:
     enable: no
     version: 2018.1.5
