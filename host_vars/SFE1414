@@ -1,0 +1,35 @@
+ansible_connection: local
+
+box_name: SFE1414
+
+langs:
+  - en
+  - hu
+
+gui:
+  desktop: mate
+
+users:
+  - name: hron
+    fullname: Gabor GARAMI
+    shell: zsh
+
+networkmanager:
+  enabled: yes
+  plugins:
+    - pptp
+    - openvpn
+    - vpnc
+
+jetbrains:
+  java:
+    enable: yes
+    version: 2019.3.3
+    build: 193.6494.35
+    license: free
+#  ruby:
+#    enable: yes
+#  agent:
+#    enable: no
+
+# vim: ft=yaml

@@ -1,0 +1,60 @@
+- name: "[HRON] Add user to groups"
+  shell: "usermod -a -G jbadmin,admin gabor"
+
+- name: "[HRON] Install utilities"
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - evolution
+    - evolution-ews
+    - evolution-plugins
+    - galculator 
+    - geeqie
+    - gimp
+    - gnome-icon-theme-nuovo
+    - mysql-workbench
+    - pluma
+
+- name: "[HRON] Install SSH key"
+  copy:
+    src: "gabor/{{ item.src }}"
+    dest: "/home/gabor/{{ item.dest }}"
+    mode: "{{ item.mode | default(0644) }}"
+    owner: gabor
+    group: gabor
+  with_items:
+    - src: ssh_config
+      dest: .ssh/ssh_config
+    - src: authorized_keys
+      dest: .ssh/authorized_keys
+    - src: zshrc
+      dest: .zshrc
+    - src: bashrc
+      dest: .bashrc
+    - src: aliases
+      dest: .aliases
+
+- name: "[HRON] Download VIM profile"
+  get_url:
+    url: https://github.com/hron84/dotvim/archive/master.zip
+    dest: /tmp/vimrc.zip
+    state: present
+
+- name: "[HRON] Unpack VIM profile"
+  shell: unzip -qq -d /tmp /tmp/vimrc.zip
+
+- name: "[HRON] Install vim profile"
+  copy:
+    remote_copy: yes
+    src: /tmp/dotvim-master
+    dest: /home/gabor/.vim
+    owner: gabor
+    group: gabor
+    directory_mode: 0755
+    mode: 0644
+
+- name: Cleanup temporary stuffs
+  shell: rm -fr /tmp/vimrc.zip /tmp/dotvim-master
+
+ 
