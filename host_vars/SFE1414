@@ -25,8 +25,8 @@ networkmanager:
 jetbrains:
   java:
     enable: yes
-    version: 2019.3.3
-    build: 193.6494.35
+    version: 2020.3.2
+    build: 203.7148.57
     license: free
 #  ruby:
 #    enable: yes
