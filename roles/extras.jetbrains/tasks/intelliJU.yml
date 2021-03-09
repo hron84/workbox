@@ -10,7 +10,7 @@
   when: not intelliju_dir.stat.exists
   register: intelliju_download
 
-- name: "[INTELLIJ:U] Unpack IntelliJ Ultimate"
+- name: "[INTELLIJ:U] Unpack IntelliJ Ultimate {{ jetbrains.java.version }}"
   unarchive:
     remote_src: yes
     src: /tmp/intelliju.tar.gz

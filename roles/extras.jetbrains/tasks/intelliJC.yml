@@ -10,7 +10,7 @@
   when: not intellijc_dir.stat.exists
   register: intellijc_download
 
-- name: "[INTELLIJ:C] Unpack IntelliJ Community"
+- name: "[INTELLIJ:C] Unpack IntelliJ Community {{ jetbrains.java.version }}"
   unarchive:
     remote_src: yes
     src: /tmp/intellijc.tar.gz
@@ -23,7 +23,7 @@
 - name: "[INTELLIJ:C] Ensure permissions"
   #shell: chmod -R g+sw /opt/JetBrains/idea-IU-{{ jetbrains.java.build }}
   file:
-    path: /opt/JetBrains/idea-IU-{{ jetbrains.java.build }}
+    path: /opt/JetBrains/idea-IC-{{ jetbrains.java.build }}
     owner: root
     group: jbadmin
     mode: ug+rw,g+s
