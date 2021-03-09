@@ -55,19 +55,19 @@
     state: stopped
   when: networkmanager is defined and networkmanager.enabled
 
-- name: Disable SystemD Resolver service, NM manages it
+- name: Redirect resolv.conf to NetworkManager
+  file:
+    src: /var/run/NetworkManager/resolv.conf
+    dest: /etc/resolv.conf
+  when: networkmanager is defined and networkmanager.enabled and nm_pkg.changed
+
+- name: Disable SystemD Resolver service
   service:
     enabled: no
     name: systemd-resolved
     state: stopped
   when: networkmanager is defined and networkmanager.enabled
 
-- name: Remove resolv.conf
-  file:
-    path: /etc/resolv.conf
-    state: absent
-  when: networkmanager is defined and networkmanager.enabled and nm_pkg.changed
-  notify: restart network-manager
 
 - name: Enable NetworkManager
   service:
