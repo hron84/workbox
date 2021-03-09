@@ -35,14 +35,21 @@
     - src: aliases
       dest: .aliases
 
+- name: "[HRON] Check if VIM profile presents"
+  stat:
+    path: /home/hron/.vim
+  register: dotvim_path
+
 - name: "[HRON] Download VIM profile"
   get_url:
     url: https://github.com/hron84/dotvim/archive/master.zip
     dest: /tmp/vimrc.zip
     state: present
+  when: not dotvim_path.stat.exists
 
 - name: "[HRON] Unpack VIM profile"
   shell: unzip -qq -d /tmp /tmp/vimrc.zip
+  when: not omz_path.stat.exists 
 
 - name: "[HRON] Install vim profile"
   copy:
@@ -53,6 +60,35 @@
     group: hron
     directory_mode: 0755
     mode: 0644
+  when: not omz_path.stat.exists 
+
+- name: "[HRON] Check if OMZ profile present"
+  stat:
+    path: /home/hron/.oh-my-zsh
+  register: omz_path
+
+- name: "[HRON] Download OMZ profile"
+  get_url: 
+    url: https://github.com/hron84/oh-my-zsh/archive/master.zip
+    dest: /tmp/omz.zip
+    state: present
+  when: not omz_path.stat.exists 
+
+- name: "[HRON] Unpack OMZ profile"
+  shell: unzip -qq -d /tmp /tmp/omz.zip
+  when: not omz_path.stat.exists 
+
+- name: "[HRON] Install OMZ profile"
+  copy:
+    remote_copy: true
+    src: /tmp/oh-my-zsh-master
+    dest: /home/hron/.oh-my-zsh
+    owner: hron
+    group: hron
+    directory_mode: 0755
+    mode: 0644
+  when: not omz_path.stat.exists 
+
 
 - name: Cleanup temporary stuffs
   shell: rm -fr /tmp/vimrc.zip /tmp/dotvim-master
