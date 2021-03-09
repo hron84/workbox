@@ -32,5 +32,6 @@ jetbrains:
 #    enable: yes
 #  agent:
 #    enable: no
-
+zoom:
+  enable: yes
 # vim: ft=yaml

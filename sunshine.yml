@@ -32,4 +32,5 @@
       tags: nodejs
     - role: base.users
       tags: users
-
+    - role: extras.zoom
+      tags: zoom

@@ -1,0 +1,12 @@
+---
+- name: Check Zoom is installed
+  stat:
+    path: /opt/zoom/zoom
+  register: zoom_exe
+
+- name: Install Zoom
+  apt:
+    deb: https://zoom.us/client/latest/zoom_amd64.deb
+    state: present
+  when: zoom is defined and not zoom_exe.stat.exists
+
