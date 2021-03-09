@@ -1,37 +1,35 @@
-- hosts: sunshine
+- hosts: SFE1414
   roles:
     - role: base.ansible
       tags: ansible
-    #- role: base.linux
-    #tags: linux
+    - role: base.linux
+      tags: linux
     - role: base.linux.devtools
       tags: devtools
-    #- role: base.netman
-    #- tags: network
-    #- role: base.openssh
-    #  tags: ssh
+    - role: base.netman
+      tags: network
+    - role: base.openssh
+      tags: ssh
     #- role: gui.mate
     #  tags: mate
-    #- role: extras.chrome
-    #  tags: chrome
+    - role: extras.chrome
+      tags: chrome
     - role: extras.teamviewer
       tags: 
         - teamviewer
         - tvw
-    - role: extras.java
-      tags: java
+    # - role: extras.java
+    #   tags: java
     - role: extras.jetbrains
       tags: jetbrains
-      #- role: extras.slack
-      #  tags: slack
-    - role: extras.skype
-      tags: skype
-    - role: extras.messenger
-      tags: messenger
+    - role: extras.slack
+      tags: slack
+    # - role: extras.skype
+    #   tags: skype
+    #- role: extras.messenger
+    #  tags: messenger
     - role: base.nodejs
       tags: nodejs
-    - role: extras.minikube
-      tags: kubernetes
-      #- role: base.users
-      #tags: users
+    #- role: base.users
+    #  tags: users
 
