@@ -3,18 +3,42 @@
   apt:
     name: gnupg
     state: present
+
 - name: Install Ansible PPA Key
   apt_key:
     id: 7BB9C367
     keyserver: keyserver.ubuntu.com
+  when: ansible_lsb.release < '20.04'
 
 - name: Install Ansible PPA repo
   apt_repository:
     repo: ppa:ansible/ansible
+  when: ansible_lsb.release < '20.04'
 
 
-- name: Install Ansible
+- name: Install Ansible via APT
   apt:
     update_cache: yes
     name: ansible
     state: latest
+  when: ansible_lsb.release < '20.04'
+
+## XXX Ansible decided to not release in PPA for 20.04 / Focal
+
+- name: Install pip
+  apt:
+    update_cache: yes
+    name: python3-pip
+    state: latest
+
+- name: Remove packaged Ansible
+  apt:
+    name: ansible
+    state: absent
+  when: ansible_lsb.release >= '20.04'
+
+- name: Install Ansible via PIP
+  pip:
+    name: ansible
+    state: latest
+  when: ansible_lsb.release >= '20.04'
