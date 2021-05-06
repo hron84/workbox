@@ -34,4 +34,6 @@
     #  tags: users
     - role: extras.zoom
       tags: zoom
+    - role: extras.kubetools
+      tags: kubernetes
 
