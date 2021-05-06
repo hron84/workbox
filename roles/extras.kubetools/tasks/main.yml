@@ -1,0 +1,7 @@
+---
+- import_tasks: kubectl.yml
+
+- import_tasks: kubens.yml
+
+- import_tasks: openshift.yml
+  when: openshift is defined and openshift.enable

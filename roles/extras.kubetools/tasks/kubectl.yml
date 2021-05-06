@@ -1,0 +1,30 @@
+- name: "[KUBERNETES] Check if Kubernetes package keys exists"
+  stat:
+    path: /usr/share/keyrings/kubernetes-archive-keyring.gpg
+  register: kube_keys
+
+- name: "[KUBERNETES] Download Kubnernetes package keys"
+  get_url:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    dest: /usr/share/keyrings/kubernetes-archive-keyring.gpg
+  when: not kube_keys.stat.exists
+
+- name: "[KUBERNETES] Ensure Kubernetes keys permissions"
+  file:
+    path: /usr/share/keyrings/kubernetes-archive-keyring.gpg
+    owner: root
+    group: root
+    mode: 0644
+    state: file
+- name: "[KUBERNETES] Add Kubernetes APT repository"
+  apt_repository:
+    repo: deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    filename: kubernetes
+    update_cache: yes
+
+- name: "[KUBERNETES] Install kubectl"
+  package:
+    name: kubectl
+    state: latest
+    

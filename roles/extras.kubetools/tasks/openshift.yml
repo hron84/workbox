@@ -1,0 +1,39 @@
+- name: "[OPENSHIFT] Check if OpenShift client exists"
+  stat:
+    path: /usr/bin/oc
+  register: oc_bin
+  when: openshift is defined and openshift.enable
+- name: "[OPENSHIFT] Download OpenShift Client"
+  get_url:
+    url: https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz
+    dest: /tmp/oc.tar.gz
+  register: oc_download
+  when: openshift is defined and openshift.enable and not oc_bin.stat.exists
+- name: "[OPENSHIFT] Unpack Openshift Client"
+  unarchive:
+    src: /tmp/oc.tar.gz
+    dest: /tmp
+    creates: /tmp/oc
+    remote_src: yes
+  register: oc_unpack
+  when: openshift is defined and openshift.enable and oc_download is defined and oc_download.changed
+
+- name: "[OPENSHIFT] Copy client to the correct location"
+  copy:
+    src: /tmp/oc
+    dest: /usr/local/bin/oc
+    owner: root
+    group: root
+    mode: 0755
+  when: openshift is defined and openshift.enable and oc_unpack is defined and oc_unpack.changed
+
+- name: "[OPENSHIFT] Cleanup OpenShift client temporary files"
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /tmp/oc.tar.gz
+    - /tmp/oc
+    - /tmp/kubectl
+    - /tmp/README.md
+  when: openshift is defined and openshift.enable

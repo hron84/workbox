@@ -1,0 +1,20 @@
+- name: "[KUBERNETES] Check if KubeNS exists"
+  stat:
+    path: /usr/local/bin/kubens
+  register: kubens_bin
+  when: kube.kubens is defined and kube.kubens.version is defined
+
+- name: "[KUBERNETES] Download KubeNS"
+  get_url:
+    url: https://github.com/ahmetb/kubectx/releases/download/v{{ kube.kubens.version }}/kubens
+    dest: /usr/local/bin/kubens
+  when: kube.kubens is defined and kube.kubens.version is defined and not kubens_bin.stat.exists
+
+- name: "[KUBERNETES] Ensure KubeNS permissions"
+  file:
+    path: /usr/local/bin/kubens
+    owner: root
+    group: root
+    mode: 0755
+    state: file
+  when: kube.kubens is defined and kube.kubens.version is defined

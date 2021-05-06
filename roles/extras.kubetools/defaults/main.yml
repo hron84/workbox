@@ -1,0 +1,7 @@
+---
+kube:
+  kubens:
+    version: 0.9.3
+openshift:
+  enable: yes
+  version: x.x
