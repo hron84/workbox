@@ -14,10 +14,8 @@
     #  tags: mate
     - role: extras.chrome
       tags: chrome
-    - role: extras.teamviewer
-      tags: 
-        - teamviewer
-        - tvw
+    - role: extras.anydesk
+      tags: anydesk
     # - role: extras.java
     #   tags: java
     - role: extras.jetbrains
