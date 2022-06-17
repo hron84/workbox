@@ -1,4 +1,12 @@
 ---
+- name: Add TeamViewer APT key
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: "{{ item }}"
+  with_items:
+    - EF423EF772DB573C
+    - C5E224500C1289C0
+
 - name: Add TeamViewer APT repository 
   apt_repository:
     repo: "deb http://linux.teamviewer.com/deb {{ item.dist }} {{ item.group }}"
@@ -7,16 +15,6 @@
   with_items:
     - dist: stable
       group: main
-    - dist: stable
-      group: tv12
-
-- name: Add TeamViewer APT key
-  apt_key:
-    keyserver: keyserver.ubuntu.com
-    id: "{{ item }}"
-  with_items:
-    - EF423EF772DB573C
-    - C5E224500C1289C0
 
 - name: Install TeamViewer
   apt:
