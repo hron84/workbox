@@ -1,4 +1,4 @@
-- hosts: SFE1414
+- hosts: sfe2790
   roles:
     - role: base.ansible
       tags: ansible
