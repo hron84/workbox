@@ -1,0 +1,18 @@
+---
+- name: "[ANYDESK] Add APT key"
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: D56311E5FF3B6F39D5A16ABE18DF3741CDFFDE29
+
+- name: "[ANYDESK] Add APT repository"
+  apt_repository:
+    repo: "deb http://deb.anydesk.com/ all main"
+    filename: anydesk
+    state: present
+
+
+- name: "[ANYDESK] Install AnyDesk package"
+  apt:
+    name: anydesk
+    update_cache: yes
+    state: latest
